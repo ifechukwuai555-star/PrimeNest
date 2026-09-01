@@ -1,130 +1,86 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // =========================
-  // MOBILE MENU
-  // =========================
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Mobile menu
   const menuButton = document.getElementById("menuButton");
   const mainNav = document.getElementById("mainNav");
 
   if (menuButton && mainNav) {
-    menuButton.addEventListener("click", () => {
-      const isOpen = mainNav.classList.toggle("active");
+    menuButton.addEventListener("click", function () {
+      mainNav.classList.toggle("active");
 
-      menuButton.setAttribute("aria-expanded", String(isOpen));
-      menuButton.textContent = isOpen ? "✕" : "☰";
-    });
-
-    mainNav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        mainNav.classList.remove("active");
-        menuButton.setAttribute("aria-expanded", "false");
+      if (mainNav.classList.contains("active")) {
+        menuButton.textContent = "✕";
+      } else {
         menuButton.textContent = "☰";
-      });
+      }
     });
   }
 
-  // =========================
-  // PROPERTY SEARCH
-  // =========================
+  // Search
+  const searchButton = document.getElementById("searchButton");
   const locationSearch = document.getElementById("locationSearch");
   const typeSearch = document.getElementById("typeSearch");
   const priceSearch = document.getElementById("priceSearch");
-  const searchButton = document.getElementById("searchButton");
 
-  const propertyCards = document.querySelectorAll(".property-card");
+  const propertyCards =
+    document.querySelectorAll(".property-card");
 
-  function searchProperties(scrollToResults = false) {
-    const location = (locationSearch?.value || "")
-      .trim()
-      .toLowerCase();
+  if (searchButton) {
+    searchButton.addEventListener("click", function () {
+      const location =
+        locationSearch.value.toLowerCase().trim();
 
-    const type = (typeSearch?.value || "all").toLowerCase();
-    const maxPrice = priceSearch?.value || "all";
+      const type = typeSearch.value.toLowerCase();
 
-    let visibleCount = 0;
+      const maxPrice = priceSearch.value;
 
-    propertyCards.forEach((card) => {
-      const cardLocation =
-        (card.dataset.location || "").toLowerCase();
+      let found = 0;
 
-      const cardType =
-        (card.dataset.type || "").toLowerCase();
+      propertyCards.forEach(function (card) {
+        const cardLocation =
+          (card.dataset.location || "").toLowerCase();
 
-      const cardPrice =
-        Number(card.dataset.price || 0);
+        const cardType =
+          (card.dataset.type || "").toLowerCase();
 
-      const locationMatches =
-        !location || cardLocation.includes(location);
+        const cardPrice =
+          Number(card.dataset.price || 0);
 
-      const typeMatches =
-        type === "all" || cardType === type;
+        const locationMatch =
+          location === "" ||
+          cardLocation.includes(location);
 
-      const priceMatches =
-        maxPrice === "all" ||
-        cardPrice <= Number(maxPrice);
+        const typeMatch =
+          type === "all" ||
+          cardType === type;
 
-      const shouldShow =
-        locationMatches &&
-        typeMatches &&
-        priceMatches;
+        const priceMatch =
+          maxPrice === "all" ||
+          cardPrice <= Number(maxPrice);
 
-      card.style.display = shouldShow ? "" : "none";
+        if (
+          locationMatch &&
+          typeMatch &&
+          priceMatch
+        ) {
+          card.style.display = "";
+          found++;
+        } else {
+          card.style.display = "none";
+        }
+      });
 
-      if (shouldShow) {
-        visibleCount++;
+      if (found === 0) {
+        alert("No properties found.");
       }
     });
-
-    let noResults = document.getElementById("noResults");
-
-    if (!noResults) {
-      noResults = document.createElement("p");
-      noResults.id = "noResults";
-      noResults.textContent =
-        "No properties match your search.";
-      noResults.style.textAlign = "center";
-      noResults.style.marginTop = "20px";
-
-      const propertyGrid =
-        document.getElementById("propertyGrid");
-
-      propertyGrid?.parentElement?.appendChild(noResults);
-    }
-
-    noResults.style.display =
-      visibleCount === 0 ? "block" : "none";
-
-    if (scrollToResults) {
-      document
-        .getElementById("properties")
-        ?.scrollIntoView({
-          behavior: "smooth"
-        });
-    }
   }
 
-  searchButton?.addEventListener("click", () => {
-    searchProperties(true);
-  });
+  // Property details
+  const modal =
+    document.getElementById("propertyModal");
 
-  locationSearch?.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      searchProperties(true);
-    }
-  });
-
-  typeSearch?.addEventListener("change", () => {
-    searchProperties(false);
-  });
-
-  priceSearch?.addEventListener("change", () => {
-    searchProperties(false);
-  });
-
-  // =========================
-  // PROPERTY DETAILS MODAL
-  // =========================
-  const modal = document.getElementById("propertyModal");
-  const closeModalButton =
+  const closeModal =
     document.getElementById("closeModal");
 
   const modalTitle =
@@ -139,142 +95,74 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalPrice =
     document.getElementById("modalPrice");
 
-  function openPropertyModal(button) {
-    if (!modal || !button) return;
-
-    if (modalTitle) {
-      modalTitle.textContent =
-        button.dataset.title || "Property";
-    }
-
-    if (modalLocation) {
-      modalLocation.textContent =
-        button.dataset.location || "";
-    }
-
-    if (modalDetails) {
-      modalDetails.textContent =
-        button.dataset.details || "";
-    }
-
-    if (modalPrice) {
-      modalPrice.textContent =
-        button.dataset.price || "";
-    }
-
-    modal.classList.add("active");
-    modal.setAttribute("aria-hidden", "false");
-  }
-
-  function closePropertyModal() {
-    if (!modal) return;
-
-    modal.classList.remove("active");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
   document
     .querySelectorAll(".details-button")
-    .forEach((button) => {
-      button.addEventListener("click", () => {
-        openPropertyModal(button);
+    .forEach(function (button) {
+      button.addEventListener("click", function () {
+        modalTitle.textContent =
+          button.dataset.title || "Property";
+
+        modalLocation.textContent =
+          button.dataset.location || "";
+
+        modalDetails.textContent =
+          button.dataset.details || "";
+
+        modalPrice.textContent =
+          button.dataset.price || "";
+
+        modal.classList.add("active");
       });
     });
 
-  closeModalButton?.addEventListener(
-    "click",
-    closePropertyModal
-  );
+  if (closeModal) {
+    closeModal.addEventListener("click", function () {
+      modal.classList.remove("active");
+    });
+  }
 
-  modal?.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      closePropertyModal();
-    }
-  });
+  // Close modal when clicking outside
+  if (modal) {
+    modal.addEventListener("click", function (event) {
+      if (event.target === modal) {
+        modal.classList.remove("active");
+      }
+    });
+  }
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closePropertyModal();
-    }
-  });
-
-  // =========================
-  // FAVORITES
-  // =========================
+  // Favorites
   const favoriteButtons =
     document.querySelectorAll(".favorite-button");
 
-  const FAVORITES_KEY = "primeNestFavorites";
+  favoriteButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      button.classList.toggle("active");
 
-  let favorites = [];
-
-  try {
-    favorites = JSON.parse(
-      localStorage.getItem(FAVORITES_KEY) || "[]"
-    );
-  } catch {
-    favorites = [];
-  }
-
-  favoriteButtons.forEach((button, index) => {
-    const card = button.closest(".property-card");
-
-    const favoriteId =
-      `${card?.dataset.location || "property"}-${index}`;
-
-    button.dataset.favoriteId = favoriteId;
-
-    const alreadyFavorite =
-      favorites.includes(favoriteId);
-
-    button.classList.toggle(
-      "active",
-      alreadyFavorite
-    );
-
-    button.textContent =
-      alreadyFavorite ? "♥" : "♡";
-
-    button.addEventListener("click", () => {
-      const currentIndex =
-        favorites.indexOf(favoriteId);
-
-      if (currentIndex !== -1) {
-        favorites.splice(currentIndex, 1);
-
-        button.classList.remove("active");
-        button.textContent = "♡";
-      } else {
-        favorites.push(favoriteId);
-
-        button.classList.add("active");
+      if (button.classList.contains("active")) {
         button.textContent = "♥";
+      } else {
+        button.textContent = "♡";
       }
-
-      localStorage.setItem(
-        FAVORITES_KEY,
-        JSON.stringify(favorites)
-      );
     });
   });
 
-  // =========================
-  // CONTACT FORM
-  // =========================
+  // Contact form
   const contactForm =
     document.getElementById("contactForm");
 
   const formMessage =
     document.getElementById("formMessage");
 
-  contactForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
+  if (contactForm) {
+    contactForm.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    if (formMessage) {
-      formMessage.textContent =
-        "Thanks! Your inquiry has been received.";
-    }
+      if (formMessage) {
+        formMessage.textContent =
+          "Thanks! Your inquiry has been received.";
+      }
 
-    contactForm.reset();
-  });
+      contactForm.reset();
+    });
+  }
 });
