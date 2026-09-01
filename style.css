@@ -15,9 +15,20 @@ body {
   line-height: 1.6;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 a {
   text-decoration: none;
   color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 .navbar {
@@ -26,33 +37,39 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   background: white;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .logo {
   font-size: 22px;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .logo span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  margin-right: 7px;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
   background: #087f5b;
   color: white;
   border-radius: 10px;
+  font-size: 14px;
 }
 
 nav {
   display: flex;
   gap: 25px;
+  align-items: center;
 }
 
 nav a {
@@ -75,13 +92,26 @@ nav a:hover {
   font-weight: 700;
   border: none;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .nav-button:hover,
 .primary-button:hover,
 .search-button:hover {
   background: #056548;
+  transform: translateY(-2px);
 }
+
+.menu-button {
+  display: none;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #17221d;
+}
+
+/* HERO */
 
 .hero {
   min-height: 650px;
@@ -139,12 +169,17 @@ nav a:hover {
   font-weight: 700;
 }
 
+.secondary-button:hover {
+  background: #087f5b;
+  color: white;
+}
+
 .hero-card {
   width: min(470px, 100%);
   height: 420px;
   border-radius: 25px;
   background:
-    linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.65)),
+    linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.65)),
     url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80")
     center/cover;
   display: flex;
@@ -155,10 +190,6 @@ nav a:hover {
 .hero-card-content {
   color: white;
   padding: 30px;
-}
-
-.hero-card-content p {
-  margin-bottom: 5px;
 }
 
 .hero-card-content h3 {
@@ -172,6 +203,8 @@ nav a:hover {
   margin-top: 12px;
 }
 
+/* SEARCH */
+
 .search-section {
   padding: 0 7%;
   margin-top: -45px;
@@ -183,10 +216,10 @@ nav a:hover {
   background: white;
   padding: 25px;
   border-radius: 15px;
-  box-shadow: 0 10px 35px rgba(0,0,0,.12);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: end;
-  gap: 20px;
+  gap: 15px;
 }
 
 .search-field {
@@ -207,6 +240,7 @@ nav a:hover {
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  background: white;
 }
 
 .search-field input:focus,
@@ -217,6 +251,8 @@ nav a:hover {
 .search-button {
   padding: 14px 25px;
 }
+
+/* SECTIONS */
 
 .properties-section,
 .why-section,
@@ -241,6 +277,8 @@ nav a:hover {
   color: #68756e;
 }
 
+/* PROPERTY CARDS */
+
 .property-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -251,13 +289,13 @@ nav a:hover {
   background: white;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,.07);
-  transition: transform .25s ease, box-shadow .25s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .property-card:hover {
   transform: translateY(-7px);
-  box-shadow: 0 15px 35px rgba(0,0,0,.12);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 .property-image {
@@ -289,6 +327,26 @@ nav a:hover {
   border-radius: 6px;
   font-size: 12px;
   font-weight: 700;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: #087f5b;
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.favorite-button.active {
+  background: #087f5b;
+  color: white;
 }
 
 .property-info {
@@ -336,12 +394,19 @@ nav a:hover {
   font-weight: 700;
 }
 
+.details-button:hover {
+  background: #087f5b;
+  color: white;
+}
+
 .no-results {
   display: none;
   text-align: center;
   margin-top: 30px;
   color: #68756e;
 }
+
+/* FEATURES */
 
 .why-section {
   background: #eef8f3;
@@ -372,6 +437,8 @@ nav a:hover {
 .feature p {
   color: #68756e;
 }
+
+/* ABOUT */
 
 .about-section {
   padding: 100px 7%;
@@ -412,8 +479,56 @@ nav a:hover {
   color: #c8d1cc;
 }
 
+/* CONTACT */
+
 .contact-section {
   background: #f7faf9;
+}
+
+.contact-form {
+  max-width: 850px;
+  margin: 0 auto 40px;
+  background: white;
+  padding: 35px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d6ded9;
+  border-radius: 8px;
+  outline: none;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #087f5b;
+}
+
+.form-message {
+  margin-top: 15px;
+  color: #087f5b;
+  font-weight: 700;
 }
 
 .contact-card {
@@ -422,7 +537,7 @@ nav a:hover {
   background: white;
   padding: 35px;
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.07);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
@@ -443,6 +558,69 @@ nav a:hover {
   font-size: 14px;
 }
 
+/* MODAL */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 3000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  width: min(550px, 100%);
+  background: white;
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  color: #68756e;
+  margin-bottom: 12px;
+}
+
+.modal-content strong {
+  display: block;
+  color: #087f5b;
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #eef8f3;
+  color: #087f5b;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.modal-contact-button {
+  margin-top: 5px;
+}
+
+/* WHATSAPP */
+
 .whatsapp-button {
   position: fixed;
   right: 22px;
@@ -451,13 +629,16 @@ nav a:hover {
   height: 58px;
   border-radius: 50%;
   background: #25d366;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 27px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   z-index: 2000;
 }
+
+/* FOOTER */
 
 footer {
   padding: 30px 7%;
@@ -472,8 +653,33 @@ footer {
   margin-bottom: 8px;
 }
 
+/* MOBILE */
+
 @media (max-width: 900px) {
+
+  .menu-button {
+    display: block;
+    order: 3;
+  }
+
   nav {
+    display: none;
+    position: absolute;
+    top: 76px;
+    left: 0;
+    width: 100%;
+    padding: 20px 7%;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav.active {
+    display: flex;
+  }
+
+  .nav-button {
     display: none;
   }
 
@@ -504,12 +710,13 @@ footer {
 }
 
 @media (max-width: 650px) {
+
   .navbar {
     padding: 14px 5%;
   }
 
-  .nav-button {
-    display: none;
+  .logo {
+    font-size: 19px;
   }
 
   .hero {
@@ -539,11 +746,16 @@ footer {
   .property-grid,
   .features,
   .contact-card,
-  .about-statistics {
+  .about-statistics,
+  .form-row {
     grid-template-columns: 1fr;
   }
 
-  .about-statistics {
-    width: 100%;
+  .contact-form {
+    padding: 25px;
+  }
+
+  .modal-content {
+    padding: 30px 22px;
   }
 }
