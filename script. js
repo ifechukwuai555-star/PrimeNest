@@ -1,0 +1,99 @@
+// PrimeNest Website JavaScript
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const searchButton = document.getElementById("searchButton");
+  const locationSearch = document.getElementById("locationSearch");
+  const typeSearch = document.getElementById("typeSearch");
+  const propertyCards = document.querySelectorAll(".property-card");
+  const noResults = document.getElementById("noResults");
+
+  // Property search
+  function searchProperties() {
+    const location = locationSearch.value.trim().toLowerCase();
+    const type = typeSearch.value.toLowerCase();
+
+    let visibleProperties = 0;
+
+    propertyCards.forEach((card) => {
+      const cardLocation =
+        (card.dataset.location || "").toLowerCase();
+
+      const cardType =
+        (card.dataset.type || "").toLowerCase();
+
+      const locationMatches =
+        location === "" || cardLocation.includes(location);
+
+      const typeMatches =
+        type === "all" || cardType === type;
+
+      if (locationMatches && typeMatches) {
+        card.style.display = "block";
+        visibleProperties++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    noResults.style.display =
+      visibleProperties === 0 ? "block" : "none";
+  }
+
+  if (searchButton) {
+    searchButton.addEventListener("click", () => {
+      searchProperties();
+
+      const propertiesSection =
+        document.getElementById("properties");
+
+      if (propertiesSection) {
+        propertiesSection.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+    });
+  }
+
+  // Search when pressing Enter
+  if (locationSearch) {
+    locationSearch.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        searchProperties();
+      }
+    });
+  }
+
+  // Property details buttons
+  const detailButtons =
+    document.querySelectorAll(".details-button");
+
+  detailButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+
+      const card = button.closest(".property-card");
+
+      if (!card) return;
+
+      const title =
+        card.querySelector("h3")?.textContent ||
+        "Property";
+
+      const price =
+        card.querySelector(".property-bottom strong")
+          ?.textContent ||
+        "Price unavailable";
+
+      const location =
+        card.querySelector(".property-location")
+          ?.textContent ||
+        "Location unavailable";
+
+      alert(
+        `${title}\n${location}\nPrice: ${price}\n\n` +
+        `Contact PrimeNest for more information.`
+      );
+    });
+  });
+
+});
