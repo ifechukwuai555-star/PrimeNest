@@ -1,6 +1,9 @@
-
 document.addEventListener("DOMContentLoaded", function () {
-  // Mobile menu
+
+  // ==============================
+  // MOBILE MENU
+  // ==============================
+
   const menuButton = document.getElementById("menuButton");
   const mainNav = document.getElementById("mainNav");
 
@@ -14,69 +17,148 @@ document.addEventListener("DOMContentLoaded", function () {
         menuButton.textContent = "☰";
       }
     });
+
+    mainNav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        mainNav.classList.remove("active");
+        menuButton.textContent = "☰";
+      });
+    });
   }
 
-  // Search
-  const searchButton = document.getElementById("searchButton");
-  const locationSearch = document.getElementById("locationSearch");
-  const typeSearch = document.getElementById("typeSearch");
-  const priceSearch = document.getElementById("priceSearch");
+
+  // ==============================
+  // SMOOTH NAVIGATION
+  // ==============================
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+
+    link.addEventListener("click", function (event) {
+
+      const targetId = link.getAttribute("href");
+
+      if (!targetId || targetId === "#") {
+        return;
+      }
+
+      const target = document.querySelector(targetId);
+
+      if (target) {
+        event.preventDefault();
+
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    });
+
+  });
+
+
+  // ==============================
+  // PROPERTY SEARCH
+  // ==============================
+
+  const searchButton =
+    document.getElementById("searchButton");
+
+  const locationSearch =
+    document.getElementById("locationSearch");
+
+  const typeSearch =
+    document.getElementById("typeSearch");
+
+  const priceSearch =
+    document.getElementById("priceSearch");
 
   const propertyCards =
     document.querySelectorAll(".property-card");
 
-  if (searchButton) {
-    searchButton.addEventListener("click", function () {
-      const location =
-        locationSearch.value.toLowerCase().trim();
 
-      const type = typeSearch.value.toLowerCase();
+  function searchProperties() {
 
-      const maxPrice = priceSearch.value;
+    const location =
+      (locationSearch?.value || "")
+      .toLowerCase()
+      .trim();
 
-      let found = 0;
+    const type =
+      (typeSearch?.value || "all")
+      .toLowerCase();
 
-      propertyCards.forEach(function (card) {
-        const cardLocation =
-          (card.dataset.location || "").toLowerCase();
+    const maxPrice =
+      priceSearch?.value || "all";
 
-        const cardType =
-          (card.dataset.type || "").toLowerCase();
+    let found = 0;
 
-        const cardPrice =
-          Number(card.dataset.price || 0);
 
-        const locationMatch =
-          location === "" ||
-          cardLocation.includes(location);
+    propertyCards.forEach(function (card) {
 
-        const typeMatch =
-          type === "all" ||
-          cardType === type;
+      const cardLocation =
+        (card.dataset.location || "")
+        .toLowerCase();
 
-        const priceMatch =
-          maxPrice === "all" ||
-          cardPrice <= Number(maxPrice);
+      const cardType =
+        (card.dataset.type || "")
+        .toLowerCase();
 
-        if (
-          locationMatch &&
-          typeMatch &&
-          priceMatch
-        ) {
-          card.style.display = "";
-          found++;
-        } else {
-          card.style.display = "none";
-        }
-      });
+      const cardPrice =
+        Number(card.dataset.price || 0);
 
-      if (found === 0) {
-        alert("No properties found.");
+
+      const locationMatch =
+        location === "" ||
+        cardLocation.includes(location);
+
+      const typeMatch =
+        type === "all" ||
+        cardType === type;
+
+      const priceMatch =
+        maxPrice === "all" ||
+        cardPrice <= Number(maxPrice);
+
+
+      if (
+        locationMatch &&
+        typeMatch &&
+        priceMatch
+      ) {
+
+        card.style.display = "";
+        found++;
+
+      } else {
+
+        card.style.display = "none";
+
       }
+
     });
+
+
+    if (found === 0) {
+      alert("No properties match your search.");
+    }
+
   }
 
-  // Property details
+
+  if (searchButton) {
+
+    searchButton.addEventListener(
+      "click",
+      searchProperties
+    );
+
+  }
+
+
+  // ==============================
+  // PROPERTY DETAILS
+  // ==============================
+
   const modal =
     document.getElementById("propertyModal");
 
@@ -95,74 +177,156 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalPrice =
     document.getElementById("modalPrice");
 
+
   document
     .querySelectorAll(".details-button")
     .forEach(function (button) {
-      button.addEventListener("click", function () {
-        modalTitle.textContent =
-          button.dataset.title || "Property";
 
-        modalLocation.textContent =
-          button.dataset.location || "";
+      button.addEventListener(
+        "click",
+        function () {
 
-        modalDetails.textContent =
-          button.dataset.details || "";
+          if (!modal) return;
 
-        modalPrice.textContent =
-          button.dataset.price || "";
+          modalTitle.textContent =
+            button.dataset.title || "Property";
 
-        modal.classList.add("active");
-      });
+          modalLocation.textContent =
+            button.dataset.location || "";
+
+          modalDetails.textContent =
+            button.dataset.details || "";
+
+          modalPrice.textContent =
+            button.dataset.price || "";
+
+          modal.classList.add("active");
+
+        }
+      );
+
     });
+
 
   if (closeModal) {
-    closeModal.addEventListener("click", function () {
-      modal.classList.remove("active");
-    });
-  }
 
-  // Close modal when clicking outside
-  if (modal) {
-    modal.addEventListener("click", function (event) {
-      if (event.target === modal) {
+    closeModal.addEventListener(
+      "click",
+      function () {
+
         modal.classList.remove("active");
+
       }
-    });
+    );
+
   }
 
-  // Favorites
-  const favoriteButtons =
-    document.querySelectorAll(".favorite-button");
 
-  favoriteButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      button.classList.toggle("active");
+  if (modal) {
 
-      if (button.classList.contains("active")) {
-        button.textContent = "♥";
-      } else {
-        button.textContent = "♡";
+    modal.addEventListener(
+      "click",
+      function (event) {
+
+        if (event.target === modal) {
+          modal.classList.remove("active");
+        }
+
       }
-    });
-  });
+    );
 
-  // Contact form
+  }
+
+
+  // ==============================
+  // FAVORITES
+  // ==============================
+
+  document
+    .querySelectorAll(".favorite-button")
+    .forEach(function (button) {
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          button.classList.toggle("active");
+
+          if (
+            button.classList.contains("active")
+          ) {
+
+            button.textContent = "♥";
+
+          } else {
+
+            button.textContent = "♡";
+
+          }
+
+        }
+      );
+
+    });
+
+
+  // ==============================
+  // CONTACT FORM
+  // ==============================
+
   const contactForm =
     document.getElementById("contactForm");
 
   const formMessage =
     document.getElementById("formMessage");
 
+
   if (contactForm) {
-    contactForm.addEventListener("submit", function (event) {
-      event.preventDefault();
 
-      if (formMessage) {
-        formMessage.textContent =
-          "Thanks! Your inquiry has been received.";
+    contactForm.addEventListener(
+      "submit",
+      function (event) {
+
+        event.preventDefault();
+
+
+        const name =
+          document.getElementById("name")?.value.trim();
+
+        const email =
+          document.getElementById("email")?.value.trim();
+
+        const message =
+          document.getElementById("message")?.value.trim();
+
+
+        if (!name || !email || !message) {
+
+          if (formMessage) {
+            formMessage.textContent =
+              "Please complete all fields.";
+          }
+
+          return;
+
+        }
+
+
+        if (formMessage) {
+
+          formMessage.textContent =
+            "Thank you, " +
+            name +
+            "! Your inquiry has been received.";
+
+        }
+
+
+        contactForm.reset();
+
       }
+    );
 
-      contactForm.reset();
-    });
   }
-});
+
+});});
