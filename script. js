@@ -1,163 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-  // ==============================
-  // MOBILE MENU
-  // ==============================
+  /* =========================
+     MOBILE MENU
+  ========================= */
 
   const menuButton = document.getElementById("menuButton");
   const mainNav = document.getElementById("mainNav");
 
   if (menuButton && mainNav) {
-    menuButton.addEventListener("click", function () {
+
+    menuButton.addEventListener("click", (event) => {
+
+      event.preventDefault();
+      event.stopPropagation();
+
       mainNav.classList.toggle("active");
 
-      if (mainNav.classList.contains("active")) {
-        menuButton.textContent = "✕";
-      } else {
-        menuButton.textContent = "☰";
-      }
+      const opened = mainNav.classList.contains("active");
+
+      menuButton.textContent = opened ? "✕" : "☰";
+      menuButton.setAttribute("aria-expanded", opened);
+
     });
 
-    mainNav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
+
+    mainNav.querySelectorAll("a").forEach(link => {
+
+      link.addEventListener("click", () => {
+
         mainNav.classList.remove("active");
+
         menuButton.textContent = "☰";
+
+        menuButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
       });
-    });
-  }
-
-
-  // ==============================
-  // SMOOTH NAVIGATION
-  // ==============================
-
-  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
-
-    link.addEventListener("click", function (event) {
-
-      const targetId = link.getAttribute("href");
-
-      if (!targetId || targetId === "#") {
-        return;
-      }
-
-      const target = document.querySelector(targetId);
-
-      if (target) {
-        event.preventDefault();
-
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    });
-
-  });
-
-
-  // ==============================
-  // PROPERTY SEARCH
-  // ==============================
-
-  const searchButton =
-    document.getElementById("searchButton");
-
-  const locationSearch =
-    document.getElementById("locationSearch");
-
-  const typeSearch =
-    document.getElementById("typeSearch");
-
-  const priceSearch =
-    document.getElementById("priceSearch");
-
-  const propertyCards =
-    document.querySelectorAll(".property-card");
-
-
-  function searchProperties() {
-
-    const location =
-      (locationSearch?.value || "")
-      .toLowerCase()
-      .trim();
-
-    const type =
-      (typeSearch?.value || "all")
-      .toLowerCase();
-
-    const maxPrice =
-      priceSearch?.value || "all";
-
-    let found = 0;
-
-
-    propertyCards.forEach(function (card) {
-
-      const cardLocation =
-        (card.dataset.location || "")
-        .toLowerCase();
-
-      const cardType =
-        (card.dataset.type || "")
-        .toLowerCase();
-
-      const cardPrice =
-        Number(card.dataset.price || 0);
-
-
-      const locationMatch =
-        location === "" ||
-        cardLocation.includes(location);
-
-      const typeMatch =
-        type === "all" ||
-        cardType === type;
-
-      const priceMatch =
-        maxPrice === "all" ||
-        cardPrice <= Number(maxPrice);
-
-
-      if (
-        locationMatch &&
-        typeMatch &&
-        priceMatch
-      ) {
-
-        card.style.display = "";
-        found++;
-
-      } else {
-
-        card.style.display = "none";
-
-      }
 
     });
-
-
-    if (found === 0) {
-      alert("No properties match your search.");
-    }
 
   }
 
 
-  if (searchButton) {
 
-    searchButton.addEventListener(
-      "click",
-      searchProperties
-    );
+  /* =========================
+     PROPERTY DATA
+  ========================= */
 
-  }
+  const cards = [
+    ...document.querySelectorAll(".property-card")
+  ];
 
 
-  // ==============================
-  // PROPERTY DETAILS
-  // ==============================
+
+  /* =========================
+     PROPERTY MODAL
+  ========================= */
 
   const modal =
     document.getElementById("propertyModal");
@@ -165,71 +65,225 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeModal =
     document.getElementById("closeModal");
 
+  const modalImage =
+    document.getElementById("modalImage");
+
   const modalTitle =
     document.getElementById("modalTitle");
 
   const modalLocation =
     document.getElementById("modalLocation");
 
-  const modalDetails =
-    document.getElementById("modalDetails");
-
   const modalPrice =
     document.getElementById("modalPrice");
 
+  const modalDetails =
+    document.getElementById("modalDetails");
 
-  document
-    .querySelectorAll(".details-button")
-    .forEach(function (button) {
+  const modalBeds =
+    document.getElementById("modalBeds");
 
-      button.addEventListener(
-        "click",
-        function () {
+  const modalBaths =
+    document.getElementById("modalBaths");
 
-          if (!modal) return;
+  const modalSize =
+    document.getElementById("modalSize");
 
-          modalTitle.textContent =
-            button.dataset.title || "Property";
+  const modalInquiryButton =
+    document.getElementById("modalInquiryButton");
 
-          modalLocation.textContent =
-            button.dataset.location || "";
 
-          modalDetails.textContent =
-            button.dataset.details || "";
 
-          modalPrice.textContent =
-            button.dataset.price || "";
+  let selectedProperty = "";
 
-          modal.classList.add("active");
 
-        }
-      );
+
+  function openProperty(card) {
+
+    if (!card || !modal) return;
+
+
+    selectedProperty =
+      card.dataset.title || "Selected Property";
+
+
+    modalImage.src =
+      card.dataset.image || "";
+
+
+    modalImage.alt =
+      card.dataset.title || "Property";
+
+
+    modalTitle.textContent =
+      card.dataset.title || "Property";
+
+
+    modalLocation.textContent =
+      "📍 " +
+      (card.dataset.locationFull || "");
+
+
+    modalPrice.textContent =
+      card.dataset.priceDisplay || "";
+
+
+    modalBeds.textContent =
+      "🛏 " +
+      (card.dataset.beds || "");
+
+
+    modalBaths.textContent =
+      "🚿 " +
+      (card.dataset.baths || "");
+
+
+    modalSize.textContent =
+      "📐 " +
+      (card.dataset.size || "");
+
+
+    modalDetails.textContent =
+      card.dataset.details || "";
+
+
+    modal.classList.add("active");
+
+    modal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    document.body.classList.add(
+      "modal-open"
+    );
+
+  }
+
+
+
+  function closeProperty() {
+
+    if (!modal) return;
+
+    modal.classList.remove("active");
+
+    modal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.classList.remove(
+      "modal-open"
+    );
+
+  }
+
+
+
+  /* =========================
+     MAKE ENTIRE PROPERTY CARD
+     TAPPABLE
+  ========================= */
+
+  cards.forEach(card => {
+
+    card.addEventListener("click", event => {
+
+      /*
+        Don't open the property modal when
+        the user taps a button inside it.
+      */
+
+      if (
+        event.target.closest(".favorite-button") ||
+        event.target.closest(".details-button")
+      ) {
+        return;
+      }
+
+      openProperty(card);
 
     });
 
+
+    card.addEventListener("keydown", event => {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        event.preventDefault();
+
+        openProperty(card);
+
+      }
+
+    });
+
+  });
+
+
+
+  /* =========================
+     VIEW DETAILS BUTTONS
+  ========================= */
+
+  document
+    .querySelectorAll(".details-button")
+    .forEach(button => {
+
+      button.addEventListener("click", event => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const card =
+          button.closest(".property-card");
+
+        openProperty(card);
+
+      });
+
+    });
+
+
+
+  /* =========================
+     CLOSE MODAL
+  ========================= */
 
   if (closeModal) {
 
     closeModal.addEventListener(
       "click",
-      function () {
+      event => {
 
-        modal.classList.remove("active");
+        event.preventDefault();
+
+        closeProperty();
 
       }
     );
 
   }
+
 
 
   if (modal) {
 
     modal.addEventListener(
       "click",
-      function (event) {
+      event => {
 
-        if (event.target === modal) {
-          modal.classList.remove("active");
+        if (
+          event.target === modal
+        ) {
+
+          closeProperty();
+
         }
 
       }
@@ -238,31 +292,96 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  // ==============================
-  // FAVORITES
-  // ==============================
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Escape" &&
+        modal?.classList.contains("active")
+      ) {
+
+        closeProperty();
+
+      }
+
+    }
+  );
+
+
+
+  /* =========================
+     INTERESTED BUTTON
+  ========================= */
+
+  if (modalInquiryButton) {
+
+    modalInquiryButton.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+        const propertyField =
+          document.getElementById(
+            "propertyInterest"
+          );
+
+        if (propertyField) {
+
+          propertyField.value =
+            selectedProperty;
+
+        }
+
+        closeProperty();
+
+        document
+          .getElementById("contact")
+          ?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+      }
+    );
+
+  }
+
+
+
+  /* =========================
+     FAVORITES
+  ========================= */
 
   document
     .querySelectorAll(".favorite-button")
-    .forEach(function (button) {
+    .forEach(button => {
 
       button.addEventListener(
         "click",
-        function () {
+        event => {
+
+          event.preventDefault();
+          event.stopPropagation();
 
           button.classList.toggle("active");
 
-          if (
-            button.classList.contains("active")
-          ) {
+          const isFavorite =
+            button.classList.contains("active");
 
-            button.textContent = "♥";
 
-          } else {
+          button.textContent =
+            isFavorite ? "♥" : "♡";
 
-            button.textContent = "♡";
 
-          }
+          button.setAttribute(
+            "aria-label",
+            isFavorite
+              ? "Remove from favorites"
+              : "Add to favorites"
+          );
 
         }
       );
@@ -270,41 +389,237 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-  // ==============================
-  // CONTACT FORM
-  // ==============================
+
+  /* =========================
+     SEARCH
+  ========================= */
+
+  const searchButton =
+    document.getElementById(
+      "searchButton"
+    );
+
+  const locationSearch =
+    document.getElementById(
+      "locationSearch"
+    );
+
+  const typeSearch =
+    document.getElementById(
+      "typeSearch"
+    );
+
+  const priceSearch =
+    document.getElementById(
+      "priceSearch"
+    );
+
+
+  function searchProperties() {
+
+    const location =
+      (
+        locationSearch?.value || ""
+      )
+      .toLowerCase()
+      .trim();
+
+
+    const type =
+      typeSearch?.value || "all";
+
+
+    const price =
+      priceSearch?.value || "all";
+
+
+    let found = 0;
+
+
+    cards.forEach(card => {
+
+      const cardLocation =
+        (
+          card.dataset.location || ""
+        )
+        .toLowerCase();
+
+
+      const cardType =
+        card.dataset.type || "";
+
+
+      const cardPrice =
+        Number(
+          card.dataset.price || 0
+        );
+
+
+      const locationMatch =
+        location === "" ||
+        cardLocation.includes(location);
+
+
+      const typeMatch =
+        type === "all" ||
+        cardType === type;
+
+
+      const priceMatch =
+        price === "all" ||
+        cardPrice <= Number(price);
+
+
+      const show =
+        locationMatch &&
+        typeMatch &&
+        priceMatch;
+
+
+      card.style.display =
+        show ? "" : "none";
+
+
+      if (show) found++;
+
+    });
+
+
+    const propertiesSection =
+      document.getElementById(
+        "properties"
+      );
+
+
+    if (propertiesSection) {
+
+      propertiesSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+
+    if (found === 0) {
+
+      alert(
+        "No properties match your search. Try another location, type or price."
+      );
+
+    }
+
+  }
+
+
+
+  if (searchButton) {
+
+    searchButton.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+        searchProperties();
+
+      }
+    );
+
+  }
+
+
+
+  /*
+    Allow the visitor to press ENTER
+    inside the location box.
+  */
+
+  if (locationSearch) {
+
+    locationSearch.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Enter") {
+
+          event.preventDefault();
+
+          searchProperties();
+
+        }
+
+      }
+    );
+
+  }
+
+
+
+  /* =========================
+     CONTACT FORM
+  ========================= */
 
   const contactForm =
-    document.getElementById("contactForm");
+    document.getElementById(
+      "contactForm"
+    );
+
 
   const formMessage =
-    document.getElementById("formMessage");
+    document.getElementById(
+      "formMessage"
+    );
 
 
   if (contactForm) {
 
     contactForm.addEventListener(
       "submit",
-      function (event) {
-
-        event.preventDefault();
-
+      event => {
 
         const name =
-          document.getElementById("name")?.value.trim();
+          document
+            .getElementById("name")
+            ?.value
+            .trim();
+
 
         const email =
-          document.getElementById("email")?.value.trim();
+          document
+            .getElementById("email")
+            ?.value
+            .trim();
+
+
+        const phone =
+          document
+            .getElementById("phone")
+            ?.value
+            .trim();
+
 
         const message =
-          document.getElementById("message")?.value.trim();
+          document
+            .getElementById("message")
+            ?.value
+            .trim();
 
 
-        if (!name || !email || !message) {
+        if (
+          !name ||
+          !email ||
+          !phone ||
+          !message
+        ) {
+
+          event.preventDefault();
 
           if (formMessage) {
+
             formMessage.textContent =
-              "Please complete all fields.";
+              "Please complete all fields before sending your inquiry.";
+
           }
 
           return;
@@ -312,21 +627,471 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
+        /*
+          Do NOT preventDefault here.
+
+          The form will actually submit to
+          FormSubmit and send the inquiry.
+        */
+
         if (formMessage) {
 
           formMessage.textContent =
-            "Thank you, " +
-            name +
-            "! Your inquiry has been received.";
+            "Sending your inquiry...";
 
         }
-
-
-        contactForm.reset();
 
       }
     );
 
   }
 
-});});
+
+
+  /* =========================
+     NORMAL ANCHOR LINKS
+  ========================= */
+
+  document
+    .querySelectorAll(
+      'a[href^="#"]'
+    )
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        event => {
+
+          const targetId =
+            link.getAttribute("href");
+
+
+          if (
+            !targetId ||
+            targetId === "#"
+          ) {
+
+            return;
+
+          }
+
+
+          const target =
+            document.querySelector(
+              targetId
+            );
+
+
+          if (target) {
+
+            event.preventDefault();
+
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+          }
+
+        }
+      );
+
+    });
+
+});
+/* =========================================
+   PRIMENEST PROPERTY INTERACTION UPGRADE
+========================================= */
+
+.property-card {
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.property-card:hover {
+  transform: translateY(-6px);
+}
+
+.property-card:focus {
+  outline: 3px solid rgba(20, 90, 55, 0.2);
+  outline-offset: 3px;
+}
+
+.details-button {
+  width: 100%;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 16px;
+  background: #123d2b;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.details-button:hover {
+  background: #0b2b1e;
+  transform: translateY(-1px);
+}
+
+.favorite-button {
+  cursor: pointer;
+  z-index: 5;
+}
+
+.favorite-button.active {
+  color: #d62828;
+  background: white;
+}
+
+
+/* =========================================
+   PROPERTY MODAL
+========================================= */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.property-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.property-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.property-modal-content {
+  position: relative;
+
+  width: min(960px, 100%);
+
+  max-height: 92vh;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.35);
+
+  transform: translateY(25px) scale(0.98);
+
+  transition: transform 0.25s ease;
+}
+
+.property-modal.active
+.property-modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.modal-image-wrap {
+  width: 100%;
+  height: 430px;
+  background: #eee;
+}
+
+.modal-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-information {
+  padding: 30px;
+}
+
+.modal-label {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+
+  color: #527461;
+}
+
+.modal-information h2 {
+  margin: 0 0 8px;
+
+  font-size: clamp(26px, 4vw, 38px);
+
+  color: #10271c;
+}
+
+.modal-location {
+  margin: 0 0 12px;
+
+  color: #64736b;
+
+  font-size: 16px;
+}
+
+.modal-price {
+  display: block;
+
+  margin: 10px 0 20px;
+
+  font-size: 25px;
+
+  color: #123d2b;
+}
+
+.modal-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-bottom: 22px;
+}
+
+.modal-stats span {
+  padding: 10px 13px;
+
+  border-radius: 9px;
+
+  background: #f2f6f3;
+
+  color: #244b39;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.modal-description {
+  line-height: 1.8;
+
+  color: #53635b;
+
+  font-size: 16px;
+
+  margin-bottom: 25px;
+}
+
+.close-modal {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  z-index: 20;
+
+  width: 44px;
+  height: 44px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  color: #17261e;
+
+  font-size: 30px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.close-modal:hover {
+  background: #ffffff;
+  transform: scale(1.05);
+}
+
+
+/* =========================================
+   GALLERY
+========================================= */
+
+.prime-gallery {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  grid-auto-rows: 180px;
+
+  gap: 15px;
+}
+
+.prime-gallery img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  border-radius: 16px;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.prime-gallery img:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.prime-gallery img:hover {
+  transform: scale(1.02);
+  filter: brightness(0.92);
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+
+  border: 1px solid #d6dfd9;
+
+  border-radius: 10px;
+
+  padding: 14px 15px;
+
+  background: #ffffff;
+
+  font: inherit;
+
+  color: #17261e;
+
+  outline: none;
+
+  transition: border 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #397357;
+
+  box-shadow:
+    0 0 0 3px rgba(57, 115, 87, 0.1);
+}
+
+.contact-form input[readonly] {
+  background: #f5f8f6;
+  color: #486054;
+}
+
+.submit-button {
+  cursor: pointer;
+  border: 0;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .prime-gallery {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    grid-auto-rows: 160px;
+  }
+
+  .prime-gallery img:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .modal-image-wrap {
+    height: 300px;
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .property-modal {
+    padding: 10px;
+    align-items: flex-end;
+  }
+
+  .property-modal-content {
+    width: 100%;
+    max-height: 94vh;
+
+    border-radius:
+      20px 20px 0 0;
+  }
+
+  .modal-image-wrap {
+    height: 245px;
+  }
+
+  .modal-information {
+    padding: 22px 18px 25px;
+  }
+
+  .modal-price {
+    font-size: 21px;
+  }
+
+  .modal-stats {
+    gap: 7px;
+  }
+
+  .modal-stats span {
+    font-size: 12px;
+    padding: 8px 9px;
+  }
+
+  .prime-gallery {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 220px;
+  }
+
+  .prime-gallery img:first-child {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .details-button {
+    min-height: 48px;
+  }
+
+  .favorite-button {
+    width: 45px;
+    height: 45px;
+  }
+
+}
