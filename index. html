@@ -3,39 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Chisom Homes - Find your perfect home, apartment, or investment property.">
-  <title>Chisom Homes | Find Your Dream Home</title>
+
+  <meta
+    name="description"
+    content="PrimeNest - Discover homes, apartments and land across Nigeria."
+  >
+
+  <title>PrimeNest | Find Your Dream Property</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- Navigation -->
+  <!-- NAVIGATION -->
   <header class="navbar">
-    <div class="logo">
-      <span>CH</span>
-      Chisom Homes
-    </div>
 
-    <nav>
+    <a href="#home" class="logo">
+      <span>PN</span>
+      PrimeNest
+    </a>
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+    <nav id="mainNav">
       <a href="#home">Home</a>
       <a href="#properties">Properties</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
 
-    <a href="#properties" class="nav-button">View Properties</a>
+    <a href="#properties" class="nav-button">
+      View Properties
+    </a>
+
   </header>
 
 
-  <!-- Hero Section -->
   <main>
 
+    <!-- HERO -->
     <section id="home" class="hero">
 
       <div class="hero-content">
-        <p class="eyebrow">YOUR TRUSTED PROPERTY PARTNER</p>
+
+        <p class="eyebrow">
+          YOUR TRUSTED PROPERTY PARTNER
+        </p>
 
         <h1>
           Find a place
@@ -44,11 +65,12 @@
         </h1>
 
         <p class="hero-text">
-          Discover beautiful homes, apartments and investment properties
-          in great locations.
+          Discover beautiful homes, apartments and land
+          in great locations across Nigeria.
         </p>
 
         <div class="hero-buttons">
+
           <a href="#properties" class="primary-button">
             Explore Properties
           </a>
@@ -56,47 +78,119 @@
           <a href="#contact" class="secondary-button">
             Contact Us
           </a>
+
         </div>
+
       </div>
 
+
       <div class="hero-card">
+
         <div class="hero-card-content">
+
           <p>Featured Property</p>
-          <h3>Modern 4-Bedroom Duplex</h3>
-          <span>📍 Lagos, Nigeria</span>
-          <strong>₦85,000,000</strong>
+
+          <h3>
+            Modern 4-Bedroom Duplex
+          </h3>
+
+          <span>
+            📍 Lekki, Lagos
+          </span>
+
+          <strong>
+            ₦85,000,000
+          </strong>
+
         </div>
+
       </div>
 
     </section>
 
 
-    <!-- Search -->
+    <!-- SEARCH -->
     <section class="search-section">
 
       <div class="search-box">
 
         <div class="search-field">
-          <label>Location</label>
+
+          <label for="locationSearch">
+            Location
+          </label>
+
           <input
             type="text"
             id="locationSearch"
             placeholder="e.g. Lagos"
           >
+
         </div>
+
 
         <div class="search-field">
-          <label>Property Type</label>
+
+          <label for="typeSearch">
+            Property Type
+          </label>
 
           <select id="typeSearch">
-            <option value="all">All Types</option>
-            <option value="house">House</option>
-            <option value="apartment">Apartment</option>
-            <option value="land">Land</option>
+
+            <option value="all">
+              All Types
+            </option>
+
+            <option value="house">
+              House
+            </option>
+
+            <option value="apartment">
+              Apartment
+            </option>
+
+            <option value="land">
+              Land
+            </option>
+
           </select>
+
         </div>
 
-        <button id="searchButton" class="search-button">
+
+        <div class="search-field">
+
+          <label for="priceSearch">
+            Maximum Price
+          </label>
+
+          <select id="priceSearch">
+
+            <option value="all">
+              Any Price
+            </option>
+
+            <option value="20000000">
+              ₦20 Million
+            </option>
+
+            <option value="50000000">
+              ₦50 Million
+            </option>
+
+            <option value="100000000">
+              ₦100 Million
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          id="searchButton"
+          class="search-button"
+        >
           Search
         </button>
 
@@ -105,11 +199,17 @@
     </section>
 
 
-    <!-- Properties -->
-    <section id="properties" class="properties-section">
+    <!-- PROPERTIES -->
+    <section
+      id="properties"
+      class="properties-section"
+    >
 
       <div class="section-heading">
-        <p class="eyebrow">OUR PROPERTIES</p>
+
+        <p class="eyebrow">
+          OUR PROPERTIES
+        </p>
 
         <h2>
           Explore our featured
@@ -117,167 +217,299 @@
         </h2>
 
         <p>
-          Browse some of our available properties and find
+          Browse available properties and find
           something that matches your needs.
         </p>
+
       </div>
 
 
-      <div id="propertyGrid" class="property-grid">
+      <div
+        id="propertyGrid"
+        class="property-grid"
+      >
 
-        <!-- Property 1 -->
+
+        <!-- PROPERTY 1 -->
         <article
           class="property-card"
           data-location="Lagos"
           data-type="house"
+          data-price="85000000"
         >
 
           <div class="property-image property-one">
-            <span class="property-tag">For Sale</span>
+
+            <span class="property-tag">
+              For Sale
+            </span>
+
+            <button
+              class="favorite-button"
+              aria-label="Add property to favorites"
+            >
+              ♡
+            </button>
+
           </div>
+
 
           <div class="property-info">
 
-            <p class="property-location">📍 Lekki, Lagos</p>
+            <p class="property-location">
+              📍 Lekki, Lagos
+            </p>
 
-            <h3>Luxury 4-Bedroom Duplex</h3>
+            <h3>
+              Luxury 4-Bedroom Duplex
+            </h3>
 
             <div class="property-details">
+
               <span>🛏 4 Beds</span>
               <span>🛁 4 Baths</span>
               <span>🚗 2 Parking</span>
+
             </div>
 
-            <div class="property-bottom">
-              <strong>₦85,000,000</strong>
 
-              <button class="details-button">
+            <div class="property-bottom">
+
+              <strong>
+                ₦85,000,000
+              </strong>
+
+              <button
+                class="details-button"
+                data-title="Luxury 4-Bedroom Duplex"
+                data-location="Lekki, Lagos"
+                data-price="₦85,000,000"
+                data-details="4 Bedrooms • 4 Bathrooms • 2 Parking Spaces"
+              >
                 Details
               </button>
+
             </div>
 
           </div>
+
         </article>
 
 
-        <!-- Property 2 -->
+        <!-- PROPERTY 2 -->
         <article
           class="property-card"
           data-location="Abuja"
           data-type="apartment"
+          data-price="4500000"
         >
 
           <div class="property-image property-two">
-            <span class="property-tag">For Rent</span>
+
+            <span class="property-tag">
+              For Rent
+            </span>
+
+            <button
+              class="favorite-button"
+              aria-label="Add property to favorites"
+            >
+              ♡
+            </button>
+
           </div>
+
 
           <div class="property-info">
 
-            <p class="property-location">📍 Wuse 2, Abuja</p>
+            <p class="property-location">
+              📍 Wuse 2, Abuja
+            </p>
 
-            <h3>Modern 3-Bedroom Apartment</h3>
+            <h3>
+              Modern 3-Bedroom Apartment
+            </h3>
 
             <div class="property-details">
+
               <span>🛏 3 Beds</span>
               <span>🛁 3 Baths</span>
               <span>🚗 1 Parking</span>
+
             </div>
 
-            <div class="property-bottom">
-              <strong>₦4,500,000/year</strong>
 
-              <button class="details-button">
+            <div class="property-bottom">
+
+              <strong>
+                ₦4,500,000/year
+              </strong>
+
+              <button
+                class="details-button"
+                data-title="Modern 3-Bedroom Apartment"
+                data-location="Wuse 2, Abuja"
+                data-price="₦4,500,000/year"
+                data-details="3 Bedrooms • 3 Bathrooms • 1 Parking Space"
+              >
                 Details
               </button>
+
             </div>
 
           </div>
+
         </article>
 
 
-        <!-- Property 3 -->
+        <!-- PROPERTY 3 -->
         <article
           class="property-card"
           data-location="Enugu"
           data-type="land"
+          data-price="18000000"
         >
 
           <div class="property-image property-three">
-            <span class="property-tag">For Sale</span>
+
+            <span class="property-tag">
+              For Sale
+            </span>
+
+            <button
+              class="favorite-button"
+              aria-label="Add property to favorites"
+            >
+              ♡
+            </button>
+
           </div>
+
 
           <div class="property-info">
 
-            <p class="property-location">📍 Enugu, Nigeria</p>
+            <p class="property-location">
+              📍 Enugu, Nigeria
+            </p>
 
-            <h3>Residential Land</h3>
+            <h3>
+              Residential Land
+            </h3>
 
             <div class="property-details">
+
               <span>📐 600 sqm</span>
               <span>📄 Verified</span>
               <span>🛣 Road Access</span>
+
             </div>
 
-            <div class="property-bottom">
-              <strong>₦18,000,000</strong>
 
-              <button class="details-button">
+            <div class="property-bottom">
+
+              <strong>
+                ₦18,000,000
+              </strong>
+
+              <button
+                class="details-button"
+                data-title="Residential Land"
+                data-location="Enugu, Nigeria"
+                data-price="₦18,000,000"
+                data-details="600 sqm • Verified • Road Access"
+              >
                 Details
               </button>
+
             </div>
 
           </div>
+
         </article>
 
       </div>
 
-      <p id="noResults" class="no-results">
-        No properties found. Try another search.
+
+      <p
+        id="noResults"
+        class="no-results"
+      >
+        No properties found. Try changing your search.
       </p>
 
     </section>
 
 
-    <!-- Why Choose Us -->
+    <!-- WHY CHOOSE US -->
     <section class="why-section">
 
       <div class="section-heading">
-        <p class="eyebrow">WHY CHOOSE US</p>
+
+        <p class="eyebrow">
+          WHY CHOOSE US
+        </p>
 
         <h2>
           Making property search
           <span>simple</span>
         </h2>
+
       </div>
 
 
       <div class="features">
 
         <div class="feature">
-          <div class="feature-icon">🏠</div>
-          <h3>Quality Properties</h3>
+
+          <div class="feature-icon">
+            🏠
+          </div>
+
+          <h3>
+            Quality Properties
+          </h3>
+
           <p>
-            We showcase carefully selected properties
+            Discover carefully selected properties
             for different budgets and needs.
           </p>
+
         </div>
 
-        <div class="feature">
-          <div class="feature-icon">🤝</div>
-          <h3>Trusted Service</h3>
-          <p>
-            We focus on making the property search
-            experience clear and straightforward.
-          </p>
-        </div>
 
         <div class="feature">
-          <div class="feature-icon">📍</div>
-          <h3>Great Locations</h3>
+
+          <div class="feature-icon">
+            🤝
+          </div>
+
+          <h3>
+            Trusted Service
+          </h3>
+
           <p>
-            Discover properties in desirable locations
-            across Nigeria.
+            We aim to make the property search
+            experience simple and transparent.
           </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            📍
+          </div>
+
+          <h3>
+            Great Locations
+          </h3>
+
+          <p>
+            Explore properties in desirable
+            locations across Nigeria.
+          </p>
+
         </div>
 
       </div>
@@ -285,12 +517,17 @@
     </section>
 
 
-    <!-- About -->
-    <section id="about" class="about-section">
+    <!-- ABOUT -->
+    <section
+      id="about"
+      class="about-section"
+    >
 
       <div class="about-content">
 
-        <p class="eyebrow">ABOUT CHISOM HOMES</p>
+        <p class="eyebrow">
+          ABOUT PRIMENEST
+        </p>
 
         <h2>
           Helping people find
@@ -299,17 +536,20 @@
         </h2>
 
         <p>
-          Chisom Homes is a demonstration real-estate brand
-          created to showcase a modern property website.
-          Our goal is to make discovering properties simple,
-          convenient and enjoyable.
+          PrimeNest is a demonstration real-estate
+          brand created to showcase a modern
+          property website.
         </p>
 
-        <a href="#contact" class="primary-button">
+        <a
+          href="#contact"
+          class="primary-button"
+        >
           Talk To Us
         </a>
 
       </div>
+
 
       <div class="about-statistics">
 
@@ -333,12 +573,17 @@
     </section>
 
 
-    <!-- Contact -->
-    <section id="contact" class="contact-section">
+    <!-- CONTACT -->
+    <section
+      id="contact"
+      class="contact-section"
+    >
 
       <div class="section-heading">
 
-        <p class="eyebrow">CONTACT US</p>
+        <p class="eyebrow">
+          CONTACT US
+        </p>
 
         <h2>
           Ready to find your
@@ -346,37 +591,120 @@
         </h2>
 
         <p>
-          Send us a message and we'll help you find
-          a property that suits your needs.
+          Send us a message and we'll help you
+          find a property that suits your needs.
         </p>
 
       </div>
 
 
+      <form
+        id="contactForm"
+        class="contact-form"
+      >
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="name">
+              Your Name
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              placeholder="Enter your name"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="email">
+              Email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="message">
+            Message
+          </label>
+
+          <textarea
+            id="message"
+            rows="5"
+            placeholder="Tell us what property you're looking for..."
+            required
+          ></textarea>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="primary-button"
+        >
+          Send Inquiry
+        </button>
+
+        <p
+          id="formMessage"
+          class="form-message"
+        ></p>
+
+      </form>
+
+
       <div class="contact-card">
 
         <div class="contact-item">
+
           <span>📱</span>
+
           <div>
             <strong>Phone</strong>
             <p>+234 800 000 0000</p>
           </div>
+
         </div>
 
+
         <div class="contact-item">
+
           <span>📧</span>
+
           <div>
             <strong>Email</strong>
-            <p>hello@chisomhomes.com</p>
+            <p>hello@primenest.example</p>
           </div>
+
         </div>
 
+
         <div class="contact-item">
+
           <span>📍</span>
+
           <div>
             <strong>Location</strong>
             <p>Nigeria</p>
           </div>
+
         </div>
 
       </div>
@@ -386,27 +714,70 @@
   </main>
 
 
-  <!-- WhatsApp Button -->
+  <!-- PROPERTY DETAILS MODAL -->
+  <div
+    id="propertyModal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-content">
+
+      <button
+        id="closeModal"
+        class="close-modal"
+        aria-label="Close property details"
+      >
+        ×
+      </button>
+
+      <p class="eyebrow">
+        PROPERTY DETAILS
+      </p>
+
+      <h2 id="modalTitle">
+        Property
+      </h2>
+
+      <p id="modalLocation"></p>
+
+      <p id="modalDetails"></p>
+
+      <strong id="modalPrice"></strong>
+
+      <a
+        href="#contact"
+        class="primary-button modal-contact-button"
+      >
+        Ask About This Property
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- WHATSAPP -->
   <a
     href="https://wa.me/2348000000000"
     class="whatsapp-button"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Contact us on WhatsApp"
+    aria-label="Contact PrimeNest on WhatsApp"
   >
     💬
   </a>
 
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
 
     <div class="footer-logo">
-      CHISOM HOMES
+      PRIMENEST
     </div>
 
     <p>
-      © 2026 Chisom Homes. Demo website created for portfolio purposes.
+      © 2026 PrimeNest. Demo website created for portfolio purposes.
     </p>
 
   </footer>
